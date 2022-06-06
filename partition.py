@@ -41,7 +41,7 @@ def extract_features(img_path, model):
     return features.squeeze()
 
 
-def extract_avg_features(dir, model, sample_size, root):
+def extract_average_features(dir, model, sample_size, root):
     if not os.path.isdir(dir):
         print('{} not found!'.format(dir))
         return None
@@ -126,7 +126,7 @@ def main():
     all_features = []
     for item in dir_list:
         path = os.path.join(root, 'train', item)
-        class_features = extract_avg_features(path, model, 125, root)
+        class_features = extract_average_features(path, model, 125, root)
         class_features = np.nan_to_num(class_features)
         all_features.append(class_features)
         break
