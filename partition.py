@@ -14,16 +14,9 @@ from tensorflow.keras.applications.resnet50 import decode_predictions
 
 def extract_raw_features(img_path, model):
     img = image.load_img(img_path, target_size=(224, 224))
-
     transformed_img = image.img_to_array(img)
-
-    # Expand dimension
     transformed_img = np.expand_dims(transformed_img, axis=0)
-
-    # Preprocess the image
     transformed_img = preprocess_input(transformed_img)
-
-    # Make prediction
     raw_features = model.predict(transformed_img)
     raw_features = np.nan_to_num(raw_features)
     return raw_features
@@ -75,7 +68,6 @@ def extract_avg_features(dir, model, sample_size, root):
     assert all_features.shape == (sample_size, 1000)
 
     features_sum = all_features.sum(axis=0)
-
     return features_sum / sample_size
 
 
@@ -99,7 +91,6 @@ def partition(features, group_max_size):
             dists.append((key, dist))
 
         dists.sort(key=lambda x: x[1])
-
         dists = deque(dists)
         group = []
 
@@ -108,7 +99,6 @@ def partition(features, group_max_size):
             group.append(current)
 
         groups.append([key for key, _ in group])
-
         to_remove = {i for i, _ in group}
         items = [i for i in items if i[0] not in to_remove]
 
@@ -147,7 +137,6 @@ def main():
         print('Partitioning classes into groups of size ' + str(max_group_size))
         all_features_cpy = [features[:] for features in all_features]
         groups = partition(all_features_cpy, max_group_size)
-
         print('Finished partitioning, writing out groupings')
 
         outpath = os.path.join(root, 'groupings',
