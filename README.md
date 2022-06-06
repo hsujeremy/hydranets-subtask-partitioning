@@ -1,4 +1,4 @@
-# hydranets-subtask-partitioning
+# HydraNets Subtask Partitioning
 
 This code implements the subtask partitioning algorithm described by the
 [HydraNets](https://openaccess.thecvf.com/content_cvpr_2018/papers/Mullapudi_HydraNets_Specialized_Dynamic_CVPR_2018_paper.pdf)
