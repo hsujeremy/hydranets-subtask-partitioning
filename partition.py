@@ -11,8 +11,6 @@ from tensorflow.keras.preprocessing import image
 from tensorflow.keras.applications.resnet50 import preprocess_input
 from tensorflow.keras.applications.resnet50 import decode_predictions
 
-ROOT = '/mnt/batch/tasks/shared/LS_root/mounts/clusters/jeremy1/code/Users/jeremy'
-
 
 def extract_raw_features(img_path, model):
     img = image.load_img(img_path, target_size=(224, 224))
@@ -50,7 +48,7 @@ def extract_features(img_path, model):
     return features.squeeze()
 
 
-def extract_avg_features(dir, model, sample_size):
+def extract_avg_features(dir, model, sample_size, root):
     if not os.path.isdir(dir):
         print('{} not found!'.format(dir))
         return None
@@ -64,7 +62,7 @@ def extract_avg_features(dir, model, sample_size):
         if count == sample_size:
             break
 
-        img_path = os.path.join(ROOT, 'train', dir, img)
+        img_path = os.path.join(root, 'train', dir, img)
         features = extract_features(img_path, model)
         features = np.nan_to_num(features)
         assert features.shape == (1000,)
@@ -118,8 +116,8 @@ def partition(features, group_max_size):
 
 
 def main():
-    os.chdir(ROOT)
-
+    root = os.getcwd()
+    os.chdir(root)
     model = keras.applications.ResNet50()
 
     print(os.getcwd())
@@ -137,8 +135,8 @@ def main():
 
     all_features = []
     for item in dir_list:
-        path = os.path.join(ROOT, 'train', item)
-        class_features = extract_avg_features(path, model, 125)
+        path = os.path.join(root, 'train', item)
+        class_features = extract_avg_features(path, model, 125, root)
         class_features = np.nan_to_num(class_features)
         all_features.append(class_features)
         break
@@ -152,7 +150,7 @@ def main():
 
         print('Finished partitioning, writing out groupings')
 
-        outpath = os.path.join(ROOT, 'groupings',
+        outpath = os.path.join(root, 'groupings',
                                'groups_{}.txt'.format(str(max_group_size)))
         with open(outpath, 'w') as outfile:
             for group in groups:
