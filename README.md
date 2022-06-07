@@ -25,7 +25,7 @@ amount of classes if that amount is less than `C/ n`).
 
 The paper covers the algorithm in its entirety in Section 3.1.
 
-## Code Setup
+## Environment Setup
 
 If your local repository already has a virtual environment, you skip the
 creation step and just activate that one.
@@ -34,4 +34,19 @@ After setting up your virtual environment, install the required dependencies by
 running:
 ```bash
 $ pip3 install -r requirements.txt
+```
+
+Make sure your file structure follows this general format:
+```
+train
+  class1
+  class2
+  ...
+  classN
+```
+
+## Running the Code
+
+```bash
+$ python3 partition.py
 ```
